@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ 
+ 
+        <bean id="individualPaymentsCashiers" class="kz.kaspibank.manzana.reports.dbloader.BaseDatabaseLoader">
+            <property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
+            <property name="url" value="jdbc:jtds:sqlserver://loyal-repp.hq.bc:1433;DatabaseName=Kaspi_MSCRM;domain=hq;username=reployal;password=Wsxed123;user=reployal" />
+            <property name="username" value="" />
+            <property name="userpassword" value="" />
+            <property name="seprator" value=";" />
+            <property name="tableName" value="kaspi_internal.dbo.payments_cashiers" />
+            <property name="columnNames" value="[id],[start_date],[end_date],[shop_name],[cashier_name],[kaspi_cheques_count],[green_cheques_count],[percentage_by_count],[efficiency_by_transaction],[amount_for_transaction],[registered_count],[unregistered_count],[percentage_by_registration],[efficiency_by_cheques],[amount_for_payment],[amount_total],[days_from_start_count],[days_to_end_count],[average_payment_by_day],[average_payment_by_2weeks],[average_payment_by_month]"/>
+            <property name="dateFormat" value="dd.MM.yyyy"/>
+        </bean>
+
+        <bean id="cheques" class="kz.kaspibank.manzana.reports.dbloader.BaseDatabaseLoader">
+            <property name="driverClassName" value="org.h2.Driver" />
+            <property name="url" value="jdbc:h2:tcp://localhost/~/test" />
+            <property name="username" value="sa" />
+            <property name="userpassword" value="" />
+            <property name="seprator" value=";" />
+            <property name="tableName" value="CHEQUES" />
+            <property name="columnNames" value="ID, NUMBER, SUM, BONUS, CREATE_DATE,"/>
+            <property name="dateFormat" value="yyyy-MM-dd"/>
+        </bean>
+</beans>
