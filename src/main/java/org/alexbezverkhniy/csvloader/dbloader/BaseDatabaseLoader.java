@@ -12,20 +12,26 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.sql.DataSource;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 public class BaseDatabaseLoader implements DatabaseLoader {
 
+	private DataSource dataSource;
+	
 	private String url;
 	private String driverClassName;
 	private String username;
 	private String userpassword;
+	
 	private char seprator;
 	private Connection connection;
 	private CSVReader csvReader;
 	private String tableName;
 	private String columnNames;
 	private String dateFormat;
+	private Integer batchSize = 1000;
 
 	/**
 	 * Data load logic
@@ -33,8 +39,6 @@ public class BaseDatabaseLoader implements DatabaseLoader {
 	 * @throws ParseException
 	 */
 	@Override
-	// public abstract void loadData(File inputDataFile) throws SQLException,
-	// ClassNotFoundException, IOException;
 	public void	loadData(File inputDataFile, boolean truncate) throws SQLException, ClassNotFoundException, IOException {
 
 		String values = "";
@@ -45,7 +49,6 @@ public class BaseDatabaseLoader implements DatabaseLoader {
 		values = values.substring(0, values.length() - 1);
 
 		String query = "INSERT INTO " + tableName + "(" + columnNames + ") VALUES (" + values + ")";
-		System.out.println(query);
 
 		Connection con = getConnection();
 		con.setAutoCommit(false);
@@ -56,8 +59,7 @@ public class BaseDatabaseLoader implements DatabaseLoader {
 		}
 		
 		PreparedStatement ps = con.prepareStatement(query);
-		int count = 0;
-		final int batchSize = 1000;
+		int count = 0;		
 		String[] nextLine = null;
 		try {
 			while ((nextLine = csvReader.readNext()) != null) {
@@ -90,7 +92,6 @@ public class BaseDatabaseLoader implements DatabaseLoader {
 		} catch (Exception e) {
 			con.rollback();
 			e.printStackTrace();
-
 			throw new SQLException("Error occured while loading data from file to database." + e.getMessage());
 		} finally {
 			if (null != ps)
@@ -156,10 +157,14 @@ public class BaseDatabaseLoader implements DatabaseLoader {
 	 * @throws ClassNotFoundException
 	 */
 	protected Connection getConnection() throws SQLException, ClassNotFoundException {
+		/*
 		if (connection == null || connection.isClosed()) {
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, username, userpassword);
-
+		}
+		*/
+		if ((connection == null || connection.isClosed()) && dataSource != null) {
+			connection = dataSource.getConnection();
 		}
 		return connection;
 	}
@@ -239,6 +244,22 @@ public class BaseDatabaseLoader implements DatabaseLoader {
 
 	public void setDateFormat(String dateFormat) {
 		this.dateFormat = dateFormat;
+	}
+
+	public Integer getBatchSize() {
+		return batchSize;
+	}
+
+	public void setBatchSize(Integer batchSize) {
+		this.batchSize = batchSize;
+	}
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 }
