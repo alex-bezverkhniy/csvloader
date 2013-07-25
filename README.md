@@ -19,16 +19,14 @@ If you want to add .csv uploading functional to database in your "spring-applica
 
 	<bean id="cheques"
 		class="org.alexbezverkhniy.csvloader.dbloader.BaseDatabaseLoader">
-		<property name="driverClassName" value="org.h2.Driver" />
-		<property name="url" value="jdbc:h2:tcp://localhost/~/test" />
-		<property name="username" value="sa" />
-		<property name="userpassword" value="" />
 		<property name="seprator" value=";" />
-		<property name="tableName" value="CHEQUES" />
-		<property name="columnNames" value="ID, NUMBER, SUM, BONUS, CREATE_DATE," />
+		<property name="tableName" value="public.cheques" />
+		<property name="columnNames" value="ID, NUMBER, SUMM, BONUS, CREATE_DATE" />
 		<property name="dateFormat" value="yyyy-MM-dd" />
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="embeddedDataSource" />
 	</bean>
+	
+	<context:property-placeholder location="jdbc.properties" />
 ```
 
 or embedded-database mode:
