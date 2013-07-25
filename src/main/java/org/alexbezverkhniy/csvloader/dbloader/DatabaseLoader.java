@@ -3,7 +3,6 @@ package org.alexbezverkhniy.csvloader.dbloader;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
 
 /**
  * 

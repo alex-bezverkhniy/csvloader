@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -43,7 +42,7 @@ public class BaseDatabaseLoader implements DatabaseLoader {
 
 		String values = "";
 		// Title and count of columns
-		for (String s : getCSVReader(inputDataFile).readNext()) {
+		for (int i = 0; i < getCSVReader(inputDataFile).readNext().length; i++) {
 			values += "?,";
 		}
 		values = values.substring(0, values.length() - 1);
